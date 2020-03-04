@@ -23,6 +23,12 @@ Vue.component('multiple-select', require('./components/MultipleSelectComponent.v
 Vue.component('resource-form', require('./components/ResourceFormComponent.vue').default);
 Vue.component('special-line', require('./components/LineComponent.vue').default);
 
+Vue.directive('focus', {
+    inserted: function (element) {
+      element.focus()
+    }
+});
+
 window.onload = function(){
     const app = new Vue({
         el: '#app'

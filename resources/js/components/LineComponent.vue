@@ -1,17 +1,15 @@
 <template>
     <div v-bind:id="identifier">
         <div class="row">
-            <div class="col m12">
-                <span v-for="(letter, index) in letters" v-html="getLetter(index, true)"></span>
-                <br>
-                <span v-for="(letter, index) in letters" @click="openInput(index)">{{letter}}</span>
-                <br>
-                <div v-if="show">
-                    <input id="chord" type="text" style="width:auto;" size="1" v-bind:value="getLetter(last_index, false)"/>
-                    <button class="btn"  @click="addChord()"><i class="material-icons">add</i></button>
-                    <button class="btn red"  @click="hideInput()"><i class="material-icons">remove</i></button>
-                </div>
-            </div>
+            <span v-for="(letter, index) in letters" v-html="getLetter(index, true)"></span>
+        </div>
+        <div class="row">
+            <span class="span-chord" v-for="(letter, index) in letters" @click="openInput(index)" v-bind:style="getPadding(index)">{{letter}}</span>
+        </div>
+        <div v-if="show">
+            <input @keyup.enter="addChord()" id="chord" type="text" style="width:auto;" size="1" v-bind:value="getLetter(last_index, false)" v-focus/>
+            <button class="btn"  @click="addChord()"><i class="material-icons">add</i></button>
+            <button class="btn red"  @click="hideInput()"><i class="material-icons">remove</i></button>
         </div>
     </div>
 </template>
@@ -45,6 +43,13 @@
                 console.log(this.chords);
                 this.hideInput();
             },
+            getPadding : function(index){
+                var padding = 0;
+                if(this.chords[index]){
+                    padding = 10 * this.chords[index].length;
+                }
+                return 'padding-right:' + padding  + 'px';
+            },            
             getLetter : function(index, raw){
                 if(this.chords[index]){
                     return this.chords[index];

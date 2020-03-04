@@ -9,9 +9,9 @@
     </div>
     <div class="row">
         <div class="col s12 m8 offset-m2">
-            <p><b>Lines:</b>
+            <p><b>Lines:</b></p>
             @foreach($song->lines as $line)
-                <special-line letters="{{$line->line}}" :options='{{! json_encode($chords) !}}'></special-line>
+                <special-line letters="{{ $line->line }}" :options='{!! json_encode($chords) !!}'></special-line>
             @endforeach      
         </div>
     </div>
