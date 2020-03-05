@@ -21,6 +21,7 @@ Route::resource('songs', 'SongController');
 Route::resource('chords', 'ChordController');
 
 Route::get('cypher/{song}', ['as' => 'songs.cypher', 'uses' => 'SongController@cypher']);
+Route::put('cypher/{song}', ['as' => 'songs.conclude', 'uses' => 'SongController@conclude']);
 
 Auth::routes();
 

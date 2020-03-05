@@ -1,16 +1,21 @@
 <template>
-    <div v-bind:id="identifier">
+    <div>
         <div class="row">
-            <span v-for="(letter, index) in letters" v-html="getLetter(index, true)"></span>
+            <span v-for="(letter, index) in letters" v-html="getLetter(index)"></span>
         </div>
         <div class="row">
             <span class="span-chord" v-for="(letter, index) in letters" @click="openInput(index)" v-bind:style="getPadding(index)">{{letter}}</span>
         </div>
         <div v-if="show">
-            <input @keyup.enter="addChord()" id="chord" type="text" style="width:auto;" size="1" v-bind:value="getLetter(last_index, false)" v-focus/>
+            <select id="chord" class="browser-default" @change="addChord()"  v-model="inputValue" style="width:150px;display:inline;" v-focus>
+                <option value="-1">None</option>
+                <option v-for="(option, index) in options" v-bind:value="index">{{ option.name }}</option>
+            </select>
             <button class="btn"  @click="addChord()"><i class="material-icons">add</i></button>
             <button class="btn red"  @click="hideInput()"><i class="material-icons">remove</i></button>
         </div>
+
+        <input type="text" v-for="(chord, index) in chords" v-bind:value="options[chord].id" v-bind:name="identifier + 'at' + index" hidden/>
     </div>
 </template>
 
@@ -20,7 +25,8 @@
             return {
                 chords: {},
                 show: false,
-                last_index: -1
+                lastIndex: -1,
+                inputValue: -1
             }
         },
         props: ['letters', 'identifier', 'options'],
@@ -29,37 +35,45 @@
         },
         methods : {
             openInput : function(index){
-                var input_field = document.getElementById('chord');
                 this.show = true;
-                this.last_index = index;
+                this.lastIndex = index;
+                this.inputValue = this.getSelected(index);
             },
             hideInput : function(){
+                this.inputValue = -1;
                 this.show = false;
             },
             addChord : function(){
-                var input_field = document.getElementById('chord');
-                this.chords[this.last_index] = input_field.value;
-                input_field.value = "";
-                console.log(this.chords);
+                if(this.inputValue == -1){
+                    delete this.chords[this.lastIndex];
+                }else{
+                    this.chords[this.lastIndex] = this.inputValue;
+                }
                 this.hideInput();
             },
             getPadding : function(index){
                 var padding = 0;
-                if(this.chords[index]){
-                    padding = 10 * this.chords[index].length;
+                if(this.isDefined(this.chords[index])){
+                    padding = 10 * (this.getLetter(index).length - 1);
                 }
                 return 'padding-right:' + padding  + 'px';
-            },            
-            getLetter : function(index, raw){
-                if(this.chords[index]){
+            },
+            getSelected : function(index){
+                if(this.isDefined(this.chords[index])){
                     return this.chords[index];
                 }else{
-                    if(raw){
-                        return '&nbsp;';
-                    }else{
-                        return '';
-                    }
+                    return this.inputValue;
                 }
+            }, 
+            getLetter : function(index){
+                if(this.isDefined(this.chords[index])){
+                    return this.options[this.chords[index]].name;
+                }else{
+                    return '&nbsp;';
+                }
+            },
+            isDefined : function(element){
+                return typeof element !== 'undefined';
             }
 
         }

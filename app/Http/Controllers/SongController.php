@@ -175,4 +175,20 @@ class SongController extends Controller
         $chords = \App\Chord::all();
         return view('songs.cypher', compact('song', 'chords'));
     }
+
+    public function conclude(Request $request, Song $song){
+
+        foreach($request->all() as $key=>$element){
+            if(preg_match('/[0-9]+at[0-9]+/', $key)){
+                $info = explode('at', $key);
+                $line_id = intval($info[0]);
+                $line_at = intval($info[1]);
+                $chord_id = $request->input($key);
+                
+                $line = \App\Line::find($line_id);
+                $line->chords()->attach($chord_id, ['at' => $line_at]);
+            }
+        }
+        return redirect()->route('songs.index');        
+    }
 }
