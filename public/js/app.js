@@ -113,44 +113,100 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      chords: {},
+      // True if select input should appear, false otherwise
       show: false,
-      last_index: -1
+      // Store the index of the last selected letter
+      lastIndex: -1,
+      // Store the select value of the select input
+      selectValue: -1
     };
   },
-  props: ['letters', 'identifier', 'options'],
-  mounted: function mounted() {
-    console.log('Elemento montado!');
-  },
+  props: [// Store selected choices for each position of the line
+  'choices', // Store the line's content
+  'phrase', // Store the line's ID
+  'identifier', // Store potential options for chords
+  'chords'],
   methods: {
+    /**
+     * Save the current index, show select object, and choose the right option
+     */
     openInput: function openInput(index) {
-      var input_field = document.getElementById('chord');
       this.show = true;
-      this.last_index = index;
+      this.lastIndex = index;
+      this.selectValue = this.getSelected(index);
     },
+
+    /**
+     * Hide input select and set select value to its standard value
+     */
     hideInput: function hideInput() {
+      this.selectValue = -1;
       this.show = false;
     },
+
+    /**
+     * Update the selected chord for a position accordingly and hide select
+     */
     addChord: function addChord() {
-      var input_field = document.getElementById('chord');
-      this.chords[this.last_index] = input_field.value;
-      input_field.value = "";
-      console.log(this.chords);
+      if (this.selectValue == -1) {
+        delete this.choices[this.lastIndex];
+      } else {
+        this.choices[this.lastIndex] = this.selectValue;
+      }
+
       this.hideInput();
     },
-    getLetter: function getLetter(index, raw) {
-      if (this.chords[index]) {
-        return this.chords[index];
-      } else {
-        if (raw) {
-          return '&nbsp;';
-        } else {
-          return '';
-        }
+
+    /**
+     * Retrieve a padding value for a span given the size of the chord's name
+     */
+    getPadding: function getPadding(index) {
+      var padding = 0;
+      var choice = this.choices[index];
+
+      if (this.isDefined(choice)) {
+        padding = 10 * (this.getLetter(index).length - 1);
       }
+
+      return 'padding-right:' + padding + 'px';
+    },
+
+    /**
+     * Retrieve selected chord for a given position
+     */
+    getSelected: function getSelected(index) {
+      var choice = this.choices[index];
+
+      if (!this.isDefined(choice)) {
+        choice = -1;
+      }
+
+      return choice;
+    },
+
+    /**
+     * Retrieve the name of the chord selected for a given position (in raw HTML)
+     */
+    getLetter: function getLetter(index) {
+      var choice = this.choices[index];
+
+      if (this.isDefined(choice)) {
+        return this.chords[choice];
+      } else {
+        return '&nbsp;';
+      }
+    },
+
+    /**
+     * Return true if a given element is defined, false if undefined
+     */
+    isDefined: function isDefined(element) {
+      return typeof element !== 'undefined';
     }
   }
 });
@@ -769,80 +825,134 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { attrs: { id: _vm.identifier } }, [
-    _c("div", { staticClass: "row" }, [
+  return _c(
+    "div",
+    [
       _c(
         "div",
-        { staticClass: "col m12" },
-        [
-          _vm._l(_vm.letters, function(letter, index) {
-            return _c("span", {
-              domProps: { innerHTML: _vm._s(_vm.getLetter(index, true)) }
-            })
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm._l(_vm.letters, function(letter, index) {
-            return _c(
-              "span",
+        { staticClass: "row" },
+        _vm._l(_vm.phrase, function(letter, index) {
+          return _c("span", {
+            domProps: { innerHTML: _vm._s(_vm.getLetter(index)) }
+          })
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "row" },
+        _vm._l(_vm.phrase, function(letter, index) {
+          return _c(
+            "span",
+            {
+              staticClass: "span-chord",
+              style: _vm.getPadding(index),
+              on: {
+                click: function($event) {
+                  return _vm.openInput(index)
+                }
+              }
+            },
+            [_vm._v(_vm._s(letter))]
+          )
+        }),
+        0
+      ),
+      _vm._v(" "),
+      _vm.show
+        ? _c("div", [
+            _c(
+              "select",
               {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectValue,
+                    expression: "selectValue"
+                  },
+                  { name: "focus", rawName: "v-focus" }
+                ],
+                staticClass: "small-select browser-default",
                 on: {
-                  click: function($event) {
-                    return _vm.openInput(index)
+                  keydown: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                    ) {
+                      return null
+                    }
+                    return _vm.addChord()
+                  },
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.selectValue = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
                   }
                 }
               },
-              [_vm._v(_vm._s(letter))]
+              [
+                _c("option", { attrs: { value: "-1" } }, [_vm._v("None")]),
+                _vm._v(" "),
+                _vm._l(_vm.chords, function(chord, index) {
+                  return _c("option", { domProps: { value: index } }, [
+                    _vm._v(_vm._s(chord))
+                  ])
+                })
+              ],
+              2
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn",
+                on: {
+                  click: function($event) {
+                    return _vm.addChord()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
+            ),
+            _vm._v(" "),
+            _c(
+              "a",
+              {
+                staticClass: "btn red",
+                on: {
+                  click: function($event) {
+                    return _vm.hideInput()
+                  }
+                }
+              },
+              [_c("i", { staticClass: "material-icons" }, [_vm._v("remove")])]
             )
-          }),
-          _vm._v(" "),
-          _c("br"),
-          _vm._v(" "),
-          _vm.show
-            ? _c("div", [
-                _c("input", {
-                  staticStyle: { width: "auto" },
-                  attrs: { id: "chord", type: "text", size: "1" },
-                  domProps: { value: _vm.getLetter(_vm.last_index, false) }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn",
-                    on: {
-                      click: function($event) {
-                        return _vm.addChord()
-                      }
-                    }
-                  },
-                  [_c("i", { staticClass: "material-icons" }, [_vm._v("add")])]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn red",
-                    on: {
-                      click: function($event) {
-                        return _vm.hideInput()
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("remove")
-                    ])
-                  ]
-                )
-              ])
-            : _vm._e()
-        ],
-        2
-      )
-    ])
-  ])
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.choices, function(choice, index) {
+        return _c("input", {
+          attrs: {
+            type: "text",
+            name: _vm.identifier + "at" + index,
+            hidden: ""
+          },
+          domProps: { value: choice }
+        })
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -13361,6 +13471,11 @@ Vue.component('simple-select', __webpack_require__(/*! ./components/SimpleSelect
 Vue.component('multiple-select', __webpack_require__(/*! ./components/MultipleSelectComponent.vue */ "./resources/js/components/MultipleSelectComponent.vue")["default"]);
 Vue.component('resource-form', __webpack_require__(/*! ./components/ResourceFormComponent.vue */ "./resources/js/components/ResourceFormComponent.vue")["default"]);
 Vue.component('special-line', __webpack_require__(/*! ./components/LineComponent.vue */ "./resources/js/components/LineComponent.vue")["default"]);
+Vue.directive('focus', {
+  inserted: function inserted(element) {
+    element.focus();
+  }
+});
 
 window.onload = function () {
   var app = new Vue({

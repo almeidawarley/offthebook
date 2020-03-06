@@ -11,4 +11,4 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.styles(['resources/css/style.css', 'resources/css/materialize.css'], 'public/css/app.css').js('resources/js/app.js', 'public/js');
+mix.styles(['resources/css/materialize.css', 'resources/css/style.css'], 'public/css/app.css').js('resources/js/app.js', 'public/js');

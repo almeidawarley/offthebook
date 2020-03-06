@@ -171,14 +171,24 @@ class SongController extends Controller
         return redirect()->route('songs.index');        
     }
 
-    public function cypher(Song $song){
-        $chords = \App\Chord::all();
+    public function cypher(Song $song)
+    {
+        // Generate a dictionary where each chord name is hashed by the ID
+        $chords = \App\Chord::all()->pluck("name","id");
         return view('songs.cypher', compact('song', 'chords'));
     }
 
-    public function conclude(Request $request, Song $song){
+    public function conclude(Request $request, Song $song)
+    {
+        // Erase all chords relationships from all lines
+        foreach($song->lines as $line){
+            foreach($line->chords as $chord){
+                $line->chords()->detach($chord->id);
+            }
+        }
 
-        foreach($request->all() as $key=>$element){
+        // Go through input field, and analyze those following the pattern
+        foreach($request->all() as $key => $element){
             if(preg_match('/[0-9]+at[0-9]+/', $key)){
                 $info = explode('at', $key);
                 $line_id = intval($info[0]);

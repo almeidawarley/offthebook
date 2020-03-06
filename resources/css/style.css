@@ -25,3 +25,8 @@ span{
     border-style: solid;
     cursor: pointer;
 }
+
+.small-select{
+    width: 150px;
+    display: inline !important;
+}
