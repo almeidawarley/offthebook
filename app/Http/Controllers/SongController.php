@@ -62,7 +62,7 @@ class SongController extends Controller
             ]);
         }
 
-        return redirect()->route('songs.index');
+        return redirect()->route('songs.cypher', $song->id);
     }
 
     /**

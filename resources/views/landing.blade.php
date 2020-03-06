@@ -18,20 +18,6 @@
             </div>
         </div>
 
-        <!-- https://unsplash.com/photos/jLjfAWwHdB8 -->
-
-        <div class= "col s6 m4">
-            <div class= "card center">
-                <div class= "card-image">
-                    <img src= "{{ URL::asset('img/listings.jpg') }}">
-                    <span class= "card-title"><b> @lang('title.listings')</b></span>
-                </div>
-                <div class= "card-action">
-                    <a href= "#" class = "cyan-text center-align"> @lang('button.list.listings')</a>
-                </div>
-            </div>
-        </div>
-
         <!-- https://unsplash.com/photos/YG5l5XIZ76w -->
 
         <div class= "col s6 m4">
@@ -42,6 +28,20 @@
                 </div>
                 <div class= "card-action">
                     <a href= "{{route('tags.index')}}" class = "cyan-text center-align"> @lang('button.list.themes')</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- https://unsplash.com/photos/jLjfAWwHdB8 -->
+
+        <div class= "col s6 m4">
+            <div class= "card center">
+                <div class= "card-image">
+                    <img src= "{{ URL::asset('img/listings.jpg') }}">
+                    <span class= "card-title"><b> @lang('title.listings')</b></span>
+                </div>
+                <div class= "card-action">
+                    <a href= "{{route('listings.index')}}" class = "cyan-text center-align"> @lang('button.list.listings')</a>
                 </div>
             </div>
         </div>

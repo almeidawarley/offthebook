@@ -14,7 +14,8 @@ class ListingController extends Controller
      */
     public function index()
     {
-        //
+        $listings = \App\Listing::all();
+        return view('listings.index', compact('listings'));
     }
 
     /**
@@ -24,7 +25,9 @@ class ListingController extends Controller
      */
     public function create()
     {
-        //
+        $songs = \App\Song::all();
+        $keys = \App\Chord::all()->where('key', true)->pluck('name', 'id');
+        return view('listings.create', compact('songs', 'keys'));
     }
 
     /**
@@ -35,7 +38,7 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Song extends Model
 {
     protected $fillable = [
-        'name', 'chord_id'
+        'name', 'key', 'chord_id'
     ];
 
     public function chord(){
@@ -25,4 +25,9 @@ class Song extends Model
     public function resources(){
         return $this->hasMany('App\Resource');
     }
+
+    public function listings(){
+        return $this->belongsToMany('App\Listing');
+    }
+
 }

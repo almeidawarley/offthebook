@@ -4,7 +4,7 @@
 <div class = "container">
     <div class="row">
         <div class="col s12">
-            <h3 class="center-align">Tag registration</h3>
+            <h3 class="center-align">Tag edition</h3>
         </div>
     </div>
     <form id="edit-tag" method="post" action="{{route('tags.update', $tag->id)}}">

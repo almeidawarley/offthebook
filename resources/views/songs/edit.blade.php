@@ -4,7 +4,7 @@
 <div class = "container">
     <div class="row">
         <div class="col s12">
-            <h3 class="center-align">Edit song</h3>
+            <h3 class="center-align">Song edition</h3>
         </div>
     </div>
     <form id="edit-song" method="post" action="{{route('songs.update', $song->id)}}">

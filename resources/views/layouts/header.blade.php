@@ -14,7 +14,7 @@
     </nav>                
 </div>
 <div class = "sidenav"  id = "mobile-demo">
-    <p class = "center">Índices</p>
+    <p class = "center">Indexes</p>
     <ul class = "center-align">
         <li><a href = "{{route('chords.index')}}">Chords</a></li>
         <li><a href = "{{route('songs.index')}}">Songs</a></li>
