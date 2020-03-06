@@ -14,10 +14,8 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        //
         $resources = Resource::all();
         return view('resources.index', compact('resources'));
-
     }
 
     /**

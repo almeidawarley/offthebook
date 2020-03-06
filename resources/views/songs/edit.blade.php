@@ -39,7 +39,10 @@
             <button id = "btn-edit" class="btn waves-effect waves-light" type="submit">
                 Apply changes
             </button>
-            <a id = "btn-index" href="{{route('songs.index')}}"class="btn waves-effect waves-light black">
+            <a id = "btn-index" href="{{route('songs.cypher', $song->id)}}" class="btn waves-effect waves-light blue">
+                Add chords
+            </a>
+            <a id = "btn-index" href="{{route('songs.index')}}" class="btn waves-effect waves-light black">
                 Return to index
             </a>
         </div>

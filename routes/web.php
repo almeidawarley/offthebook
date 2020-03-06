@@ -19,6 +19,7 @@ Route::resource('resources', 'ResourceController');
 Route::resource('tags', 'TagController');
 Route::resource('songs', 'SongController');
 Route::resource('chords', 'ChordController');
+Route::resource('listings', 'ListingController');
 
 Route::get('cypher/{song}', ['as' => 'songs.cypher', 'uses' => 'SongController@cypher']);
 Route::put('cypher/{song}', ['as' => 'songs.conclude', 'uses' => 'SongController@conclude']);

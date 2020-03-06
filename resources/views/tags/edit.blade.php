@@ -28,7 +28,7 @@
             <button id = "btn-edit" class="btn waves-effect waves-light" type="submit">
                 Apply changes
             </button>
-            <a id = "btn-index" href="{{route('tags.index')}}"class="btn waves-effect waves-light black">
+            <a id = "btn-index" href="{{route('tags.index')}}" class="btn waves-effect waves-light black">
                 Return to index
             </a>
         </div>

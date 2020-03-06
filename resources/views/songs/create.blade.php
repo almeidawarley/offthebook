@@ -4,7 +4,7 @@
 <div class = "container">
     <div class="row">
         <div class="col s12">
-            <h3 class="center-align">Song registration helper</h3>
+            <h3 class="center-align">Song registration</h3>
         </div>
     </div>
     <div class="row">
@@ -52,9 +52,9 @@
                 
                 <div class="row center-align">                
                     <button id = "btn-register" class="btn waves-effect waves-light" type="submit">
-                        Register song
+                        Add song
                     </button>
-                    <a id = "btn-index" href="{{route('songs.index')}}"class="btn waves-effect waves-light black">
+                    <a id = "btn-index" href="{{route('songs.index')}}" class="btn waves-effect waves-light black">
                         Return to index
                     </a>
                 </div>

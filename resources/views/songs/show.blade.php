@@ -8,7 +8,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s12 m4 offset-m2">
+        <div class="col s12 m3 offset-m1">
             <p><b>Key:</b> {{$song->chord->name}}</p>
             <p><b>Tags:</b></p>
             <ul class = "collection">
@@ -23,8 +23,7 @@
                 @forelse($song->resources as $resource)
                     <li class="collection-item">
                         {{$resource->description}}
-                        ({{$resource->format}})
-                        <a href="{{$resource->path}}">
+                        <a href="{!! $resource->path !!}">
                             <i class="material-icons">link</i>
                         </a>
                     </li>
@@ -33,10 +32,10 @@
                 @endforelse
             </ul>
         </div>
-        <div class="col s12 m4">
+        <div class="col s12 m7 offset-m1">
             <p><b>Lines:</b>
             @foreach($song->lines as $line)
-                <p>{{$line->line}}</p>
+                <line-form editable="no" identifier="{{ $line->id }}" phrase="{{ $line->line }}" :choices='{!! json_encode($line->choices) !!}' :chords='{!! json_encode($chords) !!}'></line-form>                
             @endforeach      
         </div>
     </div>

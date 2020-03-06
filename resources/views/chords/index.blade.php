@@ -29,7 +29,7 @@
                                 <form method="post" action="{{route('chords.destroy', $chord->id)}}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"><i class="material-icons">delete</i></button>
+                                    <button class="btn waves-effect waves-light red" type="submit"><i class="material-icons">delete</i></button>
                                 </form>
                             </td>
                         </tr>

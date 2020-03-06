@@ -130,13 +130,17 @@ __webpack_require__.r(__webpack_exports__);
   'choices', // Store the line's content
   'phrase', // Store the line's ID
   'identifier', // Store potential options for chords
-  'chords'],
+  'chords', // True if editable, false otherwise
+  'editable'],
   methods: {
     /**
      * Save the current index, show select object, and choose the right option
      */
     openInput: function openInput(index) {
-      this.show = true;
+      if (this.canEdit()) {
+        this.show = true;
+      }
+
       this.lastIndex = index;
       this.selectValue = this.getSelected(index);
     },
@@ -207,6 +211,24 @@ __webpack_require__.r(__webpack_exports__);
      */
     isDefined: function isDefined(element) {
       return typeof element !== 'undefined';
+    },
+
+    /**
+     * Return true if the line is editable, false otherwise
+     */
+    canEdit: function canEdit() {
+      return this.editable === "yes";
+    },
+
+    /**
+     * Define class accordingly
+     */
+    setClass: function setClass() {
+      if (this.canEdit()) {
+        return 'span-chord';
+      } else {
+        return '';
+      }
     }
   }
 });
@@ -253,11 +275,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
 //
 //
 //
@@ -846,7 +863,7 @@ var render = function() {
           return _c(
             "span",
             {
-              staticClass: "span-chord",
+              class: _vm.setClass(),
               style: _vm.getPadding(index),
               on: {
                 click: function($event) {
@@ -979,6 +996,7 @@ var render = function() {
   return _c(
     "select",
     {
+      staticClass: "search",
       attrs: { id: _vm.identifier, name: _vm.identifier + "[]", multiple: "" }
     },
     [
@@ -1024,7 +1042,7 @@ var render = function() {
       _vm._v(" "),
       _vm._l(_vm.registers, function(r, i) {
         return _c("div", { staticClass: "row align-center" }, [
-          _c("div", { staticClass: "input-field col s12 m3 offset-m1" }, [
+          _c("div", { staticClass: "input-field col s12 m3 offset-m3" }, [
             _c("i", { staticClass: "material-icons prefix" }, [_vm._v("link")]),
             _vm._v(" "),
             _c("input", {
@@ -1094,41 +1112,6 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "input-field col s12 m3" }, [
-            _c("i", { staticClass: "material-icons prefix" }, [
-              _vm._v("extension")
-            ]),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: r.format,
-                  expression: "r.format"
-                }
-              ],
-              attrs: {
-                disabled: !r.new,
-                id: "format" + i,
-                name: "format" + i,
-                type: "text",
-                value: " "
-              },
-              domProps: { value: r.format },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(r, "format", $event.target.value)
-                }
-              }
-            }),
-            _vm._v(" "),
-            _c("label", { attrs: { for: "format" + i } }, [_vm._v("Format")])
-          ]),
-          _vm._v(" "),
           _c("input", {
             directives: [
               {
@@ -1189,7 +1172,7 @@ var render = function() {
             }
           }),
           _vm._v(" "),
-          _c("div", { staticClass: "input-field col s12 m1" }, [
+          _c("div", { staticClass: "input-field col s12 m3" }, [
             !r.new
               ? _c(
                   "a",
@@ -1213,7 +1196,7 @@ var render = function() {
             _c(
               "a",
               {
-                staticClass: "waves-effect waves-light btn",
+                staticClass: "waves-effect waves-light btn red",
                 on: {
                   click: function($event) {
                     return _vm.registers.splice(i, 1)
@@ -1258,7 +1241,6 @@ var render = function() {
                   id: -1,
                   path: "",
                   description: "",
-                  format: "",
                   new: true
                 })
               }
@@ -1295,7 +1277,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "select",
-    { attrs: { id: _vm.identifier, name: _vm.identifier } },
+    {
+      staticClass: "search",
+      attrs: { id: _vm.identifier, name: _vm.identifier }
+    },
     [
       _c("option", { attrs: { value: "", disabled: "" } }, [
         _vm._v(_vm._s(_vm.message))
@@ -13470,7 +13455,7 @@ __webpack_require__(/*! ./materialize */ "./resources/js/materialize.js");
 Vue.component('simple-select', __webpack_require__(/*! ./components/SimpleSelectComponent.vue */ "./resources/js/components/SimpleSelectComponent.vue")["default"]);
 Vue.component('multiple-select', __webpack_require__(/*! ./components/MultipleSelectComponent.vue */ "./resources/js/components/MultipleSelectComponent.vue")["default"]);
 Vue.component('resource-form', __webpack_require__(/*! ./components/ResourceFormComponent.vue */ "./resources/js/components/ResourceFormComponent.vue")["default"]);
-Vue.component('special-line', __webpack_require__(/*! ./components/LineComponent.vue */ "./resources/js/components/LineComponent.vue")["default"]);
+Vue.component('line-form', __webpack_require__(/*! ./components/LineComponent.vue */ "./resources/js/components/LineComponent.vue")["default"]);
 Vue.directive('focus', {
   inserted: function inserted(element) {
     element.focus();

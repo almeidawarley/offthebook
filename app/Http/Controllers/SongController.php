@@ -25,7 +25,7 @@ class SongController extends Controller
      */
     public function create()
     {
-        $chords = \App\Chord::all();
+        $chords = \App\Chord::all()->where('key', true);
         $tags = \App\Tag::all();
         return view('songs.create', compact('chords', 'tags'));
     }
@@ -58,8 +58,7 @@ class SongController extends Controller
         for($i = 0; $i < $resources; $i++){
             $song->resources()->create([
                 'path' => $request->input('path' . $i),
-                'description' => $request->input('description' . $i),
-                'format' => $request->input('format' . $i)
+                'description' => $request->input('description' . $i)
             ]);
         }
 
@@ -74,7 +73,8 @@ class SongController extends Controller
      */
     public function show(Song $song)
     {
-        return view('songs.show', compact('song'));
+        $chords = \App\Chord::all()->pluck("name","id");
+        return view('songs.show', compact('song', 'chords'));
     }
 
     /**
@@ -85,7 +85,7 @@ class SongController extends Controller
      */
     public function edit(Song $song)
     {
-        $chords = \App\Chord::all();
+        $chords = \App\Chord::all()->where('key', true);
         $tags = \App\Tag::all();
         return view('songs.edit', compact('song', 'chords', 'tags'));
     }
@@ -128,8 +128,7 @@ class SongController extends Controller
                     $resource = \App\Resource::find($current_id);
                     $resource->fill([
                         'path' => $request->input('path' . $i),
-                        'description' => $request->input('description' . $i),
-                        'format' => $request->input('format' . $i)
+                        'description' => $request->input('description' . $i)
                     ]);
                     $resource->save();
                     array_push($current_resources, $current_id);
@@ -138,8 +137,7 @@ class SongController extends Controller
                 else{
                     $added = $song->resources()->create([
                         'path' => $request->input('path' . $i),
-                        'description' => $request->input('description' . $i),
-                        'format' => $request->input('format' . $i)
+                        'description' => $request->input('description' . $i)
                     ]);
                     array_push($current_resources, $added->id);
                 }

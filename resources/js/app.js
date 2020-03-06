@@ -21,7 +21,7 @@ require('./materialize');
 Vue.component('simple-select', require('./components/SimpleSelectComponent.vue').default);
 Vue.component('multiple-select', require('./components/MultipleSelectComponent.vue').default);
 Vue.component('resource-form', require('./components/ResourceFormComponent.vue').default);
-Vue.component('special-line', require('./components/LineComponent.vue').default);
+Vue.component('line-form', require('./components/LineComponent.vue').default);
 
 Vue.directive('focus', {
     inserted: function (element) {

@@ -8,7 +8,7 @@ class Resource extends Model
 {
 
     protected $fillable = [
-        'description', 'format', 'path'
+        'description', 'path'
     ];
 
     public function song(){

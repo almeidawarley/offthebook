@@ -14,7 +14,7 @@ class ChordController extends Controller
      */
     public function index()
     {
-        $chords = \App\Chord::all();
+        $chords = \App\Chord::all()->sortBy('name');
         return view('chords.index', compact('chords'));
     }
 

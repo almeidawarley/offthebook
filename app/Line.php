@@ -15,7 +15,7 @@ class Line extends Model
     }
 
     public function chords(){
-        return $this->belongsToMany('App\Chord')->withPivot('at');
+        return $this->belongsToMany('App\Chord')->withPivot('at')->orderBy('name');
     }
 
     public function getChoicesAttribute(){

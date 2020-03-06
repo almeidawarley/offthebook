@@ -4,7 +4,7 @@
             <span v-for="(letter, index) in phrase" v-html="getLetter(index)"></span>
         </div>
         <div class="row">
-            <span v-for="(letter, index) in phrase" @click="openInput(index)" v-bind:style="getPadding(index)" class="span-chord" >{{letter}}</span>
+            <span v-for="(letter, index) in phrase" @click="openInput(index)" v-bind:style="getPadding(index)" v-bind:class="setClass()" >{{letter}}</span>
         </div>
         <div v-if="show">
             <select class="small-select browser-default" @keydown.enter="addChord()" v-model="selectValue" v-focus>
@@ -38,14 +38,18 @@
             // Store the line's ID
             'identifier', 
             // Store potential options for chords
-            'chords'
+            'chords',            
+            // True if editable, false otherwise
+            'editable'
         ],
         methods : {
             /**
              * Save the current index, show select object, and choose the right option
              */
             openInput : function(index){
-                this.show = true;
+                if(this.canEdit()){
+                    this.show = true;
+                }
                 this.lastIndex = index;
                 this.selectValue = this.getSelected(index);
             },
@@ -104,6 +108,22 @@
              */
             isDefined : function(element){
                 return typeof element !== 'undefined';
+            },
+            /**
+             * Return true if the line is editable, false otherwise
+             */
+            canEdit : function(){
+                return this.editable === "yes";
+            },
+            /**
+             * Define class accordingly
+             */
+            setClass : function(){
+                if(this.canEdit()){
+                    return 'span-chord';
+                }else{
+                    return '';
+                }
             }
 
         }

@@ -22,7 +22,7 @@
                     <button id = "btn-register" class="btn waves-effect waves-light" type="submit">
                         Register chord
                     </button>
-                    <a id = "btn-index" href="{{route('chords.index')}}"class="btn waves-effect waves-light black">
+                    <a id = "btn-index" href="{{route('chords.index')}}" class="btn waves-effect waves-light black">
                         Return to index
                     </a>
                 </div>

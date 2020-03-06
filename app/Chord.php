@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Chord extends Model
 {
     protected $fillable = [
-        'name'
+        'name', 'key'
     ];
 
     public function songs(){

@@ -15,7 +15,7 @@
                     @csrf
                     @method('PUT')
                     @foreach($song->lines as $line)
-                        <special-line identifier="{{ $line->id }}" :choices='{!! json_encode($line->choices) !!}' phrase="{{ $line->line }}" :chords='{!! json_encode($chords) !!}'></special-line>
+                        <line-form editable="yes" identifier="{{ $line->id }}" :choices='{!! json_encode($line->choices) !!}' phrase="{{ $line->line }}" :chords='{!! json_encode($chords) !!}'></line-form>
                     @endforeach
             </div>
         </div>

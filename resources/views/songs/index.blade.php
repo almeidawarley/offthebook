@@ -34,8 +34,8 @@
                                 {{$song->updated_at}}
                             </td>
                             <td>
-                                <a href="{{route('songs.cypher', $song->id)}}"><i class="material-icons">queue_music</i></a>
                                 <a href="{{route('songs.show', $song->id)}}"><i class="material-icons">list</i></a>
+                                <a href="{{route('songs.cypher', $song->id)}}"><i class="material-icons">queue_music</i></a>
                                 <a href="{{route('songs.edit', $song->id)}}"><i class="material-icons">edit</i></a>
                             </td>
                         </tr>

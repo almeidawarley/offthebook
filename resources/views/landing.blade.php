@@ -6,7 +6,7 @@
 
         <!-- https://unsplash.com/photos/gUK3lA3K7Yo -->
 
-        <div class= "col s6 m3">
+        <div class= "col s6 m4">
             <div class= "card center">
                 <div class= "card-image">
                     <img src= "{{ URL::asset('img/music.jpg') }}">
@@ -20,7 +20,7 @@
 
         <!-- https://unsplash.com/photos/jLjfAWwHdB8 -->
 
-        <div class= "col s6 m3">
+        <div class= "col s6 m4">
             <div class= "card center">
                 <div class= "card-image">
                     <img src= "{{ URL::asset('img/listings.jpg') }}">
@@ -34,7 +34,7 @@
 
         <!-- https://unsplash.com/photos/YG5l5XIZ76w -->
 
-        <div class= "col s6 m3">
+        <div class= "col s6 m4">
             <div class= "card center">
                 <div class= "card-image">
                     <img src= "{{ URL::asset('img/themes.jpg') }}">
@@ -48,7 +48,7 @@
 
         <!-- https://unsplash.com/photos/D1Pa78SnrH0 -->
 
-        <div class= "col s6 m3">
+        <div class= "col s6 m4">
             <div class= "card center">
                 <div class= "card-image">
                     <img src= "{{ URL::asset('img/import.jpg') }}">
