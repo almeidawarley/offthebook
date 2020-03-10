@@ -87,20 +87,22 @@ class ListingController extends Controller
     {
         $listing->name = $request->name;
         $listing->description = $request->description;
+        $listing->save();
 
         $previous_songs = collect($listing->songs->pluck('id'));
         $current_songs = collect([]);
 
+        // Check songs that are part of the request
         $songs = $request->input('songs');
         for($i = 0; $i < $songs; $i++){
             $song_id = $request->input('song'.$i);
             $chord_id = $request->input('key'.$i);
-            if($previous_songs->search($song_id)){
-                // Update chord_id if necessary
+            $current_songs->push($song_id);
+            if($previous_songs->contains($song_id)){
+                $listing->songs()->syncWithoutDetaching([$song_id => ['key' => $chord_id]]);
             }else{
                 $listing->songs()->attach($song_id, ['key' => $chord_id]);
             }
-            $current_songs.push($song_id);
         }
 
         // Remove songs that were unselected  
@@ -108,6 +110,7 @@ class ListingController extends Controller
             $listing->songs()->detach($difference);
         }
 
+        return redirect()->route('listings.index');
     }
 
     /**
@@ -118,6 +121,7 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing)
     {
-        //
+        $listing->delete();
+        return redirect()->route('listings.index');
     }
 }

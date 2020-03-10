@@ -14,7 +14,7 @@
                 <div class="row">
                     <div class="input-field col s6 offset-s3">
                         <i class="material-icons prefix">title</i>
-                        <input placeholder="Title of the listing" id="name" name="name" type="text" class="validate">
+                        <input placeholder="Title of the listing" id="name" name="name" type="text" class="validate" autocomplete="none">
                         <label for="name">Title</label>
                     </div>
                 </div>
@@ -22,14 +22,14 @@
                 <div class="row">
                     <div class="input-field col s6 offset-s3">
                         <i class="material-icons prefix">description</i>
-                        <input placeholder="Description of the listing" id="description" name="description" type="text" class="validate">
+                        <input placeholder="Description of the listing" id="description" name="description" type="text" class="validate" autocomplete="none">
                         <label for="name">Description</label>
                     </div>
                 </div>
 
                 <div class="divider"></div>
 
-                <song-form :ichoices='[]' :songs='{!! json_encode($songs) !!}' :keys='{!! json_encode($keys) !!}'></song-form>
+                <song-form :chosen='[]' :songs='{!! json_encode($songs) !!}' :keys='{!! json_encode($keys) !!}'></song-form>
                                 
                 <div class="row center-align">                
                     <button id = "btn-register" class="btn waves-effect waves-light" type="submit">

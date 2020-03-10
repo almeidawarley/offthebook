@@ -34,7 +34,7 @@
                 'modifications': []
             };
         },        
-        props: ['songs', 'keys', 'ichoices'],
+        props: ['songs', 'keys', 'chosen'],
         mounted: function() {
             var elem = document.getElementById('autocomplete-input');
             this.instance = M.Autocomplete.init(elem, {
@@ -43,25 +43,17 @@
             
             var component = this;
             this.songs.forEach(function(element, index){
-                var option_name = '#' + element.id + ' ' + element.name;
+                var option_name = component.setOptionName(element.id, element.name);
                 component.options[option_name] = '';
                 component.mapping[option_name] = index;
             });
 
             // Update choices with initial choices received from outside
-            this.ichoices.forEach(function(element){
-                component.choices.push(element);
+            this.chosen.forEach(function(element, index){
+                var option_name = component.setOptionName(element.id, element.name);
+                component.choices.push(component.mapping[option_name]);
+                component.modifications.push(element.pivot.key);
             });
-            console.log('initial choices: ' + this.ichoices);
-            console.log('actual choices: ' + this.choices);
-            console.log('songs');
-            console.log(this.songs);
-
-            this.choices.forEach(function(choice){
-                component.modifications.push(component.songs[choice].chord_id);
-            });
-            console.log('personalized keys: ' + this.modifications);
-
             
             this.instance.updateData(this.options);
 
@@ -76,6 +68,10 @@
             },
             removeItem: function(index){
                 this.choices.splice(index, 1);
+                this.modifications.splice(index, 1);
+            },
+            setOptionName: function(id, name){
+                return '#' + id + ' ' + name;
             }
         }
     }

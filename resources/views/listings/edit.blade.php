@@ -4,13 +4,14 @@
 <div class = "container">
     <div class="row">
         <div class="col s12">
-            <h3 class="center-align">Listing registration</h3>
+            <h3 class="center-align">Listing edit</h3>
         </div>
     </div>
     <div class="row">
         <div class="col s12">
-            <form method="post" action="{{route('listings.store')}}" autocomplete="off">
+            <form method="post" action="{{route('listings.update', $listing->id)}}" autocomplete="off">
                 @csrf
+                @method('PUT')
                 <div class="row">
                     <div class="input-field col s6 offset-s3">
                         <i class="material-icons prefix">title</i>
@@ -28,11 +29,11 @@
                 </div>
 
                 <div class="divider"></div>
-                <song-form :ichoices='{!! json_encode($listing->songs->pluck("id")) !!}' :songs='{!! json_encode($songs) !!}' :keys='{!! json_encode($keys) !!}'></song-form>
+                <song-form :chosen='{!! json_encode($listing->songs) !!}' :songs='{!! json_encode($songs) !!}' :keys='{!! json_encode($keys) !!}'></song-form>
                                 
                 <div class="row center-align">                
                     <button id = "btn-register" class="btn waves-effect waves-light" type="submit">
-                        Add listing
+                        Apply changes
                     </button>
                     <a id = "btn-index" href="{{route('listings.index')}}" class="btn waves-effect waves-light black">
                         Return to index
@@ -40,6 +41,16 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <div class = "row center-align">
+        <form id="delete-tag" method = "post" action = "{{route('listings.destroy', $listing->id)}}">
+            @csrf
+            @method('DELETE')             
+            <button id = "btn-delete" class="btn waves-effect waves-light red" type="submit">
+                Delete listing
+            </button>
+        </form>
     </div>
 </div>
 
