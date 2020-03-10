@@ -48,6 +48,7 @@
 
         <!-- https://unsplash.com/photos/D1Pa78SnrH0 -->
 
+        <!--
         <div class= "col s6 m4">
             <div class= "card center">
                 <div class= "card-image">
@@ -59,6 +60,7 @@
                 </div>
             </div>
         </div>
+        -->
 
     </div>
 </div>

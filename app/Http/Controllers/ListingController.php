@@ -38,7 +38,17 @@ class ListingController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $request->only('name', 'description');
+        $listing = \App\Listing::create($data);
 
+        $songs = $request->input('songs');
+        for($i = 0; $i < $songs; $i++){
+            $song_id = $request->input('song'.$i);
+            $chord_id = $request->input('key'.$i);
+            $listing->songs()->attach($song_id, ['key' => $chord_id]);
+        }
+
+        return redirect()->route('listings.index');
     }
 
     /**
@@ -49,7 +59,8 @@ class ListingController extends Controller
      */
     public function show(Listing $listing)
     {
-        //
+        $chords = \App\Chord::all()->pluck('name', 'id');
+        return view('listings.show', compact('listing', 'chords'));
     }
 
     /**
@@ -60,7 +71,9 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing)
     {
-        //
+        $songs = \App\Song::all();
+        $keys = \App\Chord::all()->where('key', true)->pluck('name', 'id');
+        return view('listings.edit', compact('listing', 'songs', 'keys'));
     }
 
     /**
@@ -72,7 +85,29 @@ class ListingController extends Controller
      */
     public function update(Request $request, Listing $listing)
     {
-        //
+        $listing->name = $request->name;
+        $listing->description = $request->description;
+
+        $previous_songs = collect($listing->songs->pluck('id'));
+        $current_songs = collect([]);
+
+        $songs = $request->input('songs');
+        for($i = 0; $i < $songs; $i++){
+            $song_id = $request->input('song'.$i);
+            $chord_id = $request->input('key'.$i);
+            if($previous_songs->search($song_id)){
+                // Update chord_id if necessary
+            }else{
+                $listing->songs()->attach($song_id, ['key' => $chord_id]);
+            }
+            $current_songs.push($song_id);
+        }
+
+        // Remove songs that were unselected  
+        foreach($previous_songs->diff($current_songs) as $difference){
+            $listing->songs()->detach($difference);
+        }
+
     }
 
     /**

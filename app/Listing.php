@@ -11,7 +11,7 @@ class Listing extends Model
     ];
 
     public function songs(){
-        return $this->belongsToMany('App\Song');
+        return $this->belongsToMany('App\Song')->withPivot('key');
     }
     
 }

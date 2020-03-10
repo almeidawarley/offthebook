@@ -388,6 +388,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -395,30 +400,42 @@ __webpack_require__.r(__webpack_exports__);
       'options': {},
       'mapping': {},
       'choices': [],
-      'tonalities': []
+      'modifications': []
     };
   },
-  props: ['songs', 'keys'],
+  props: ['songs', 'keys', 'ichoices'],
   mounted: function mounted() {
     var elem = document.getElementById('autocomplete-input');
     this.instance = M.Autocomplete.init(elem, {
-      'onAutocomplete': this.foo
+      'onAutocomplete': this.updateList
     });
     var component = this;
     this.songs.forEach(function (element, index) {
       var option_name = '#' + element.id + ' ' + element.name;
       component.options[option_name] = '';
       component.mapping[option_name] = index;
+    }); // Update choices with initial choices received from outside
+
+    this.ichoices.forEach(function (element) {
+      component.choices.push(element);
     });
+    console.log('initial choices: ' + this.ichoices);
+    console.log('actual choices: ' + this.choices);
+    console.log('songs');
+    console.log(this.songs);
+    this.choices.forEach(function (choice) {
+      component.modifications.push(component.songs[choice].chord_id);
+    });
+    console.log('personalized keys: ' + this.modifications);
     this.instance.updateData(this.options);
   },
   methods: {
-    foo: function foo(value) {
+    updateList: function updateList(value, a, b) {
       var choice = this.mapping[value];
 
-      if (choice != null) {
+      if (choice != null && !this.choices.includes(choice)) {
         this.choices.push(choice);
-        this.tonalities.push(this.songs[choice].chord_id);
+        this.modifications.push(this.songs[choice].chord_id);
       }
     },
     removeItem: function removeItem(index) {
@@ -1387,99 +1404,126 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "input-field col s12" }, [
-      _c("i", { staticClass: "material-icons prefix" }, [_vm._v("music_note")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "autocomplete",
-        attrs: { type: "text", id: "autocomplete-input" },
-        on: {
-          change: function($event) {
-            return _vm.foo()
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _c("div", { staticClass: "input-field col s6 offset-s3" }, [
+        _c("i", { staticClass: "material-icons prefix" }, [
+          _vm._v("music_note")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "autocomplete",
+          attrs: { type: "text", id: "autocomplete-input" },
+          on: {
+            change: function($event) {
+              return _vm.updateList()
+            }
           }
-        }
+        }),
+        _vm._v(" "),
+        _c("label", { attrs: { for: "autocomplete-input" } }, [
+          _vm._v("Please select the songs for the listing")
+        ])
+      ]),
+      _vm._v(" "),
+      _vm.choices.length > 0
+        ? _c("div", { staticClass: "col s8 offset-s2" }, [
+            _c(
+              "ul",
+              { staticClass: "collection" },
+              _vm._l(_vm.choices, function(choice, index) {
+                return _c("li", { staticClass: "collection-item" }, [
+                  _vm._v(
+                    _vm._s(_vm.songs[choice].name) +
+                      " in key \n                "
+                  ),
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.modifications[index],
+                          expression: "modifications[index]"
+                        }
+                      ],
+                      staticClass: "browser-default small-select",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.$set(
+                            _vm.modifications,
+                            index,
+                            $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          )
+                        }
+                      }
+                    },
+                    _vm._l(_vm.keys, function(key, index) {
+                      return _c("option", { domProps: { value: index } }, [
+                        _vm._v(" " + _vm._s(key) + " ")
+                      ])
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "secondary-content",
+                      staticStyle: { cursor: "pointer" },
+                      on: {
+                        click: function($event) {
+                          return _vm.removeItem(index)
+                        }
+                      }
+                    },
+                    [
+                      _c("i", { staticClass: "material-icons prefix" }, [
+                        _vm._v("remove")
+                      ])
+                    ]
+                  )
+                ])
+              }),
+              0
+            )
+          ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm._l(_vm.choices, function(choice, index) {
+        return _c("input", {
+          attrs: { name: "song" + index, hidden: "" },
+          domProps: { value: _vm.songs[choice].id }
+        })
       }),
       _vm._v(" "),
-      _c("label", { attrs: { for: "autocomplete-input" } }, [
-        _vm._v("Please select the songs for the listing")
-      ])
-    ]),
-    _vm._v(" "),
-    _vm.choices.length > 0
-      ? _c("div", { staticClass: "col s12" }, [
-          _c(
-            "ul",
-            { staticClass: "collection" },
-            _vm._l(_vm.choices, function(choice, index) {
-              return _c("li", { staticClass: "collection-item" }, [
-                _vm._v(
-                  _vm._s(_vm.songs[choice].name) + " in key \n                "
-                ),
-                _c(
-                  "select",
-                  {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.tonalities[index],
-                        expression: "tonalities[index]"
-                      }
-                    ],
-                    staticClass: "browser-default small-select",
-                    attrs: { disabled: "" },
-                    on: {
-                      change: function($event) {
-                        var $$selectedVal = Array.prototype.filter
-                          .call($event.target.options, function(o) {
-                            return o.selected
-                          })
-                          .map(function(o) {
-                            var val = "_value" in o ? o._value : o.value
-                            return val
-                          })
-                        _vm.$set(
-                          _vm.tonalities,
-                          index,
-                          $event.target.multiple
-                            ? $$selectedVal
-                            : $$selectedVal[0]
-                        )
-                      }
-                    }
-                  },
-                  _vm._l(_vm.keys, function(key, index) {
-                    return _c("option", { domProps: { value: index } }, [
-                      _vm._v(" " + _vm._s(key) + " ")
-                    ])
-                  }),
-                  0
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "secondary-content",
-                    on: {
-                      click: function($event) {
-                        return _vm.removeItem(index)
-                      }
-                    }
-                  },
-                  [
-                    _c("i", { staticClass: "material-icons" }, [
-                      _vm._v("remove")
-                    ])
-                  ]
-                )
-              ])
-            }),
-            0
-          )
-        ])
-      : _vm._e()
-  ])
+      _vm._l(_vm.choices, function(choice, index) {
+        return _c("input", {
+          attrs: { name: "key" + index, hidden: "" },
+          domProps: { value: _vm.modifications[index] }
+        })
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { name: "songs", hidden: "" },
+        domProps: { value: _vm.choices.length }
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

@@ -13,10 +13,11 @@ class CreateTableListingsSongs extends Migration
      */
     public function up()
     {
-        Schema::create('listings_songs', function (Blueprint $table) {
+        Schema::create('listing_song', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('listing_id');
             $table->integer('song_id');
+            $table->integer('key');
 
             $table->foreign('song_id')->references('id')->on('songs')->onDelete('cascade');
             $table->foreign('listing_id')->references('id')->on('listings')->onDelete('cascade');
@@ -32,6 +33,6 @@ class CreateTableListingsSongs extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('listings_songs');
+        Schema::dropIfExists('listing_song');
     }
 }
