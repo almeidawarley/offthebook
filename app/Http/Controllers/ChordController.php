@@ -36,7 +36,9 @@ class ChordController extends Controller
      */
     public function store(Request $request)
     {
+        $keyable = $request->input('key', false);
         $data = $request->only('name');
+        $data['key'] = $keyable;
         \App\Chord::create($data);
         return redirect()->route('chords.index');   
     }

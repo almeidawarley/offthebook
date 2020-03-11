@@ -16,6 +16,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Can it be a key?</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -24,6 +25,13 @@
                         <tr>
                             <td>
                                 {{$chord->name}}
+                            </td>
+                            <td>
+                                @if($chord->key)
+                                    Yes
+                                @else
+                                    No
+                                @endif
                             </td>
                             <td>
                                 <form method="post" action="{{route('chords.destroy', $chord->id)}}">

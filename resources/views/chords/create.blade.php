@@ -10,7 +10,15 @@
     <div class="row">
         <div class="col s12">
             <form method="post" action="{{route('chords.store')}}">
-                @csrf
+                @csrf                
+                <div class="row center-align">
+                    <div class="col s6 offset-s3">
+                        <label>
+                            <input id="key" name="key" value="1" type="checkbox">
+                            <span>This chord can be a key</span>
+                        </label>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="input-field col s6 offset-s3">
                         <i class="material-icons prefix">name</i>
