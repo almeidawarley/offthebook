@@ -42,7 +42,7 @@ The goal of this project was to practice my Laravel and Vue skills on a real-lif
 
 - *Better request validation*: The user may submit invalid entries, such as special characteres in the chord name field. There is room for better request validation with Laravel personal requests options;
 
-- *User interface standardization*: Even though there has been some effort to keep all screens similar to each other, there should be a more in-depth
+- *User interface standardization*: Even though there has been some effort to keep all screens similar to each other, there should be a more in-depth study of the best way to structure the interface;
 
 - *Expansion of multi-language support*: Some buttons and labels already use the language file, which allows easier translation of the website based on the locale. However, there are stil a lot of places with stale text that wouldn't change if an effort to translate the application would be made.
 
